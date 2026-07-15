@@ -1,0 +1,13 @@
+{
+  "name": "mellontic-budget-server",
+  "version": "1.0.0",
+  "description": "Mellontic Budget Database Server",
+  "main": "sever.js",
+  "scripts": {
+    "start": "node sever.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5"
+  }
+}

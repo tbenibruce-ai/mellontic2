@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/png" href="https://img.icons8.com/neon/96/cyberpunk-glasses.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MELLONTIC_BUDGET // SECURE_LEDGER</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800;900&family=Rajdhani:wght@500;600;700&display=swap');
+
+        :root {
+            --neon-cyan: #00f0ff;
+            --neon-green: #39ff14;
+            --neon-pink: #ff007f;
+            --dark-space: #050a14;
+            --glass-bg: rgba(10, 20, 38, 0.65);
+            --glass-border: rgba(0, 240, 255, 0.15);
+            --font-display: 'Orbitron', sans-serif;
+            --font-sans: 'Rajdhani', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--dark-space);
+            background-image: 
+                radial-gradient(at 0% 0%, rgba(0, 240, 255, 0.1) 0px, transparent 50%),
+                radial-gradient(at 100% 100%, rgba(255, 0, 127, 0.08) 0px, transparent 50%),
+                linear-gradient(rgba(18, 24, 41, 0.4) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(18, 24, 41, 0.4) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 20px 20px, 20px 20px;
+            color: #e2e8f0;
+            font-family: var(--font-sans);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            letter-spacing: 0.5px;
+        }
+
+        .hud-container {
+            width: 100%;
+            max-width: 750px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 0 40px rgba(0, 240, 255, 0.05), inset 0 0 20px rgba(0, 240, 255, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hud-container::before, .hud-container::after {
+            content: '';
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            border-color: var(--neon-cyan);
+            border-style: solid;
+            pointer-events: none;
+        }
+        .hud-container::before { top: 10px; left: 10px; border-width: 2px 0 0 2px; }
+        .hud-container::after { bottom: 10px; right: 10px; border-width: 0 2px 2px 0; }
+
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        header h1 {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(0, 240, 255, 0.5);
+            margin-bottom: 5px;
+        }
+
+        .system-status {
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+            color: var(--neon-cyan);
+            text-transform: uppercase;
+            opacity: 0.8;
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        .session-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+        }
+
+        .user-profile-zone {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pfp-display {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 1px solid var(--neon-cyan);
+            box-shadow: 0 0 8px rgba(0, 240, 255, 0.4);
+            object-fit: cover;
+            background-color: #000;
+        }
+
+        .user-badge {
+            color: var(--neon-green);
+            border: 1px solid rgba(57, 255, 20, 0.25);
+            padding: 4px 10px;
+            border-radius: 4px;
+            background: rgba(57, 255, 20, 0.05);
+        }
+
+        .utility-btn {
+            background: none;
+            border: 1px solid rgba(255, 0, 127, 0.3);
+            color: var(--neon-pink);
+            padding: 4px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.7rem;
+            font-family: var(--font-display);
+            transition: all 0.2s ease;
+        }
+
+        .utility-btn:hover {
+            background: rgba(255, 0, 127, 0.1);
+            box-shadow: 0 0 10px rgba(255, 0, 127, 0.3);
+        }
+
+        .hologram-display {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px dashed rgba(0, 240, 255, 0.25);
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 30px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            position: relative;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            background: rgba(255, 255, 255, 0.04);
+            border-color: rgba(0, 240, 255, 0.2);
+        }
+
+        .stat-label {
+            font-family: var(--font-display);
+            font-size: 0.75rem;
+            color: #8fa3b8;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-family: var(--font-display);
+            font-size: 1.6rem;
+            font-weight: 700;
+        }
+
+        .value-income { color: var(--neon-green); text-shadow: 0 0 10px rgba(57, 255, 20, 0.2); }
+        .value-expense { color: var(--neon-pink); text-shadow: 0 0 10px rgba(255, 0, 127, 0.2); }
+
+        .balance-card {
+            grid-column: span 2;
+            background: linear-gradient(135deg, rgba(0, 240, 255, 0.05) 0%, rgba(255, 0, 127, 0.02) 100%);
+            border: 1px solid rgba(0, 240, 255, 0.2);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            box-shadow: inset 0 0 15px rgba(0, 240, 255, 0.05);
+        }
+
+        .balance-value {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: #fff;
+            text-shadow: 0 0 20px rgba(0, 240, 255, 0.4);
+            margin-top: 5px;
+        }
+
+        form {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .input-group label {
+            font-family: var(--font-display);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--neon-cyan);
+            letter-spacing: 1px;
+        }
+
+        input, select, button {
+            background: rgba(10, 20, 38, 0.8);
+            border: 1px solid rgba(0, 240, 255, 0.25);
+            border-radius: 6px;
+            color: #fff;
+            padding: 12px 15px;
+            font-size: 1rem;
+            font-family: var(--font-sans);
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        input:focus, select:focus {
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 10px rgba(0, 240, 255, 0.3);
+            background: rgba(15, 30, 55, 0.9);
+        }
+
+        button {
+            grid-column: span 3;
+            background: linear-gradient(90deg, #00bfff, #00f0ff);
+            color: #000;
+            font-family: var(--font-display);
+            font-weight: 800;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            border: none;
+            cursor: pointer;
+            letter-spacing: 2px;
+            box-shadow: 0 0 15px rgba(0, 240, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 25px rgba(0, 240, 255, 0.6);
+            background: linear-gradient(90deg, #00f0ff, #39ff14);
+        }
+
+        .log-section-header {
+            font-family: var(--font-display);
+            font-size: 0.9rem;
+            color: var(--neon-cyan);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(0, 240, 255, 0.2);
+            padding-bottom: 8px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        ul {
+            list-style: none;
+            max-height: 250px;
+            overflow-y: auto;
+            padding-right: 5px;
+        }
+
+        ul::-webkit-scrollbar { width: 4px; }
+        ul::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.02); }
+        ul::-webkit-scrollbar-thumb { background: var(--neon-cyan); border-radius: 10px; }
+
+        li {
+            background: rgba(255, 255, 255, 0.01);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-left: 3px solid var(--neon-cyan);
+            border-radius: 4px;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.2s ease;
+        }
+
+        li:hover {
+            background: rgba(255, 255, 255, 0.03);
+            border-color: rgba(0, 240, 255, 0.15);
+            transform: scale(1.01);
+        }
+
+        li.expense-item { border-left-color: var(--neon-pink); }
+        li.income-item { border-left-color: var(--neon-green); }
+
+        .item-info { display: flex; flex-direction: column; }
+        .item-name { font-weight: 600; font-size: 1.1rem; color: #fff; }
+        .item-category { font-family: var(--font-display); font-size: 0.65rem; letter-spacing: 1px; color: #8fa3b8; margin-top: 2px; }
+
+        .amount-wrapper { display: flex; align-items: center; gap: 15px; }
+        .item-val { font-family: var(--font-display); font-weight: 700; }
+
+        .delete-btn {
+            background: none;
+            border: none;
+            color: #ff0055;
+            cursor: pointer;
+            font-size: 1.3rem;
+            padding: 0 5px;
+            transition: transform 0.2s;
+            display: flex;
+            align-items: center;
+        }
+
+        .delete-btn:hover { color: #ff003c; transform: scale(1.2); text-shadow: 0 0 8px #ff0055; }
+
+        .auth-container { display: flex; flex-direction: column; gap: 20px; }
+        .auth-form-layout { display: flex; flex-direction: column; gap: 15px; }
+        .auth-form-layout button { width: 100%; }
+        
+        .auth-switch { text-align: center; font-size: 0.85rem; color: #8fa3b8; margin-top: 15px; }
+        .auth-switch a { color: var(--neon-cyan); text-decoration: none; font-weight: 600; }
+        .auth-switch a:hover { text-shadow: 0 0 8px var(--neon-cyan); }
+
+        .hidden { display: none !important; }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.8; text-shadow: 0 0 5px rgba(0, 240, 255, 0.3); }
+            50% { opacity: 0.4; text-shadow: none; }
+        }
+
+        @media (max-width: 600px) {
+            form { grid-template-columns: 1fr; }
+            button { grid-column: span 1; }
+            .hologram-display { grid-template-columns: 1fr; }
+            .balance-card { grid-column: span 1; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="hud-container">
+    <header>
+        <h1>MELLONTIC_BUDGET</h1>
+        <div id="status-badge" class="system-status">SYS_STATUS: OFFLINE // AUTH_REQUIRED</div>
+    </header>
+
+    <div id="auth-panel" class="auth-container">
+        <div class="log-section-header">
+            <span id="auth-header-title">IDENTITY_VERIFICATION</span>
+            <span id="auth-tip-badge" style="font-size: 0.7rem; color: var(--neon-cyan);">SECURE CONNECTION</span>
+        </div>
+
+        <form id="auth-form" class="auth-form-layout">
+            <div class="input-group">
+                <label for="auth-username">IDENTITY_NODE_ID</label>
+                <input type="text" id="auth-username" placeholder="Enter username" required autocomplete="off">
+            </div>
+            <div class="input-group">
+                <label for="auth-password">ACCESS_PASSPHRASE</label>
+                <input type="password" id="auth-password" placeholder="••••••••" required>
+            </div>
+            <div class="input-group hidden" id="pfp-group">
+                <label for="auth-pfp">AVATAR_IMAGE_URL</label>
+                <input type="url" id="auth-pfp" placeholder="https://example.com/your-pic.jpg (Optional)">
+            </div>
+            <button type="submit" id="auth-submit-btn">AUTHORIZE_ACCESS();</button>
+        </form>
+
+        <div class="auth-switch">
+            <span id="auth-switch-text">New identity node?</span> 
+            <a href="#" id="auth-toggle-link">Register Core</a>
+        </div>
+    </div>
+
+    <div id="dashboard-panel" class="hidden">
+        <div class="session-bar">
+            <div class="user-profile-zone">
+                <img id="dashboard-pfp" src="" alt="PFP" class="pfp-display">
+                <span class="user-badge" id="user-display">USER: OFFLINE</span>
+            </div>
+            <button id="logout-btn" class="utility-btn">TERMINATE_SESSION();</button>
+        </div>
+
+        <div class="hologram-display">
+            <div class="balance-card">
+                <span class="stat-label">AVAILABLE_CAPITAL</span>
+                <div id="balance" class="balance-value">$0.00</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">CREDIT_INPUT</span>
+                <div id="income" class="stat-value value-income">+$0.00</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-label">DEBIT_OUTPUT</span>
+                <div id="expenses" class="stat-value value-expense">-$0.00</div>
+            </div>
+        </div>
+
+        <form id="tracker-form">
+            <div class="input-group">
+                <label for="desc">TRANSACTION_ID</label>
+                <input type="text" id="desc" placeholder="e.g., Quantum_Salary" required autocomplete="off">
+            </div>
+            <div class="input-group">
+                <label for="amount">CREDIT_QUANTITY</label>
+                <input type="number" id="amount" placeholder="0.00" step="0.01" min="0.01" required>
+            </div>
+            <div class="input-group">
+                <label for="type">VECTOR</label>
+                <select id="type">
+                    <option value="income">INPUT (+)</option>
+                    <option value="expense">OUTPUT (-)</option>
+                </select>
+            </div>
+            <button type="submit">COMMIT_MELLONTIC_ENTRY();</button>
+        </form>
+
+        <div class="log-section-header">
+            <span>MELLONTIC_LEDGER</span>
+            <span style="font-size: 0.7rem; opacity: 0.6;">UPTIME: 100%</span>
+        </div>
+        <ul id="ledger"></ul>
+    </div>
+</div>
+
+<script>
+    // ==========================================
+    // 1. STATE CONFIGURATION & AUTH ENGINE
+    // ==========================================
+    let usersDatabase = JSON.parse(localStorage.getItem('mellontic_users')) || {};
+    let currentUser = sessionStorage.getItem('mellontic_active_user') || null;
+    let dataLog = [];
+
+    const defaultPfp = "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%2300f0ff'><path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z'/></svg>";
+
+    // Auth & Panel Elements
+    const statusBadge = document.getElementById('status-badge');
+    const authPanel = document.getElementById('auth-panel');
+    const dashboardPanel = document.getElementById('dashboard-panel');
+    const pfpGroup = document.getElementById('pfp-group');
+    const dashboardPfp = document.getElementById('dashboard-pfp');
+    
+    const authForm = document.getElementById('auth-form');
+    const authUsernameInput = document.getElementById('auth-username');
+    const authPasswordInput = document.getElementById('auth-password');
+    const authPfpInput = document.getElementById('auth-pfp');
+    const authSubmitBtn = document.getElementById('auth-submit-btn');
+    const authToggleLink = document.getElementById('auth-toggle-link');
+    const authSwitchText = document.getElementById('auth-switch-text');
+    const authHeaderTitle = document.getElementById('auth-header-title');
+    const authTipBadge = document.getElementById('auth-tip-badge');
+
+    const userDisplay = document.getElementById('user-display');
+    const logoutBtn = document.getElementById('logout-btn');
+
+    // App Tracker Elements
+    const form = document.getElementById('tracker-form');
+    const descInput = document.getElementById('desc');
+    const amountInput = document.getElementById('amount');
+    const typeInput = document.getElementById('type');
+    const ledgerList = document.getElementById('ledger');
+
+    const balanceDisplay = document.getElementById('balance');
+    const incomeDisplay = document.getElementById('income');
+    const expensesDisplay = document.getElementById('expenses');
+
+    let signUpModeActive = false;
+
+    // Toggle registration input panels
+    authToggleLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        signUpModeActive = !signUpModeActive;
+        authForm.reset();
+
+        if (signUpModeActive) {
+            authHeaderTitle.textContent = "REGISTER_CORE_IDENTITY";
+            authTipBadge.textContent = "CREATING NEW NODE";
+            authTipBadge.style.color = "var(--neon-green)";
+            authSubmitBtn.textContent = "INITIALIZE_NODE();";
+            authSwitchText.textContent = "Already verified?";
+            authToggleLink.textContent = "Sign In";
+            pfpGroup.classList.remove('hidden');
+        } else {
+            authHeaderTitle.textContent = "IDENTITY_VERIFICATION";
+            authTipBadge.textContent = "SECURE CONNECTION";
+            authTipBadge.style.color = "var(--neon-cyan)";
+            authSubmitBtn.textContent = "AUTHORIZE_ACCESS();";
+            authSwitchText.textContent = "New identity node?";
+            authToggleLink.textContent = "Register Core";
+            pfpGroup.classList.add('hidden');
+        }
+    });
+
+    // Process secure login systems
+    authForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const username = authUsernameInput.value.trim().toLowerCase();
+        const password = authPasswordInput.value;
+        const pfpUrl = authPfpInput.value.trim() || defaultPfp;
+
+        if (signUpModeActive) {
+            if (usersDatabase[username]) {
+                alert("NODE EXISTING // IDENTITY BLOCKED");
+                return;
+            }
+            usersDatabase[username] = { password: password, pfp: pfpUrl, ledger: [] };
+            localStorage.setItem('mellontic_users', JSON.stringify(usersDatabase));
+            alert("NODE REGISTRATION SUCCESSFUL // LOGGING IN");
+            login(username, pfpUrl, []);
+        } else {
+            if (usersDatabase[username] && usersDatabase[username].password === password) {
+                const userObj = usersDatabase[username];
+                login(username, userObj.pfp || defaultPfp, userObj.ledger || []);
+            } else {
+                alert("INVALID IDENTITY OR ACCESS PASSPHRASE");
+            }
+        }
+    });
+
+    function login(username, pfp, ledger) {
+        currentUser = username;
+        sessionStorage.setItem('mellontic_active_user', username);
+        
+        statusBadge.textContent = `SYS_STATUS: OPERATIONAL // SECURE_INDEX: ACTIVE`;
+        userDisplay.textContent = `USER: ${username.toUpperCase()}`;
+        
+        dashboardPfp.src = pfp || defaultPfp;
+        dashboardPfp.onerror = function() { this.src = defaultPfp; };
+
+        dataLog = ledger || [];
+
+        authPanel.classList.add('hidden');
+        dashboardPanel.classList.remove('hidden');
+
+        updateHUD();
+        renderLedger();
+    }
+
+    logoutBtn.addEventListener('click', () => {
+        sessionStorage.removeItem('mellontic_active_user');
+        currentUser = null;
+        statusBadge.textContent = `SYS_STATUS: OFFLINE // AUTH_REQUIRED`;
+        dashboardPanel.classList.add('hidden');
+        authPanel.classList.remove('hidden');
+        authForm.reset();
+    });
+
+    // ==========================================
+    // 2. CALCULATION & INTERFACE RENDER ENGINE
+    // ==========================================
+    function updateHUD() {
+        let inTotal = 0;
+        let outTotal = 0;
+
+        dataLog.forEach(item => {
+            if (item.type === 'income') { inTotal += item.amount; } 
+            else { outTotal += item.amount; }
+        });
+
+        const netLiquidity = inTotal - outTotal;
+
+        incomeDisplay.textContent = `+$${inTotal.toFixed(2)}`;
+        expensesDisplay.textContent = `-$${outTotal.toFixed(2)}`;
+        balanceDisplay.textContent = `$${netLiquidity.toFixed(2)}`;
+
+        if (netLiquidity < 0) {
+            balanceDisplay.style.color = 'var(--neon-pink)';
+            balanceDisplay.style.textShadow = '0 0 20px rgba(255, 0, 127, 0.6)';
+        } else {
+            balanceDisplay.style.color = '#fff';
+            balanceDisplay.style.textShadow = '0 0 20px rgba(0, 240, 255, 0.4)';
+        }
+    }
+
+    function renderLedger() {
+        ledgerList.innerHTML = '';
+
+        if (dataLog.length === 0) {
+            const emptyLi = document.createElement('li');
+            emptyLi.style.justifyContent = 'center';
+            emptyLi.style.color = '#8fa3b8';
+            emptyLi.style.fontStyle = 'italic';
+            emptyLi.style.border = '1px dashed rgba(255, 255, 255, 0.05)';
+            emptyLi.textContent = '[ MELLONTIC SYSTEM READY: STANDING BY FOR INPUT ]';
+            ledgerList.appendChild(emptyLi);
+            return;
+        }
+
+        dataLog.forEach((item, index) => {
+            const li = document.createElement('li');
+            const isIncome = item.type === 'income';
+            li.className = isIncome ? 'income-item' : 'expense-item';
+
+            // Safe DOM Construction (Protects against XSS injections)
+            const itemInfo = document.createElement('div');
+            itemInfo.className = 'item-info';
+
+            const itemName = document.createElement('span');
+            itemName.className = 'item-name';
+            itemName.textContent = item.desc;
+
+            const itemCategory = document.createElement('span');
+            itemCategory.className = 'item-category';
+            itemCategory.textContent = `// ${item.type.toUpperCase()}`;
+
+            itemInfo.appendChild(itemName);
+            itemInfo.appendChild(itemCategory);
+
+            const amountWrapper = document.createElement('div');
+            amountWrapper.className = 'amount-wrapper';
+
+            const itemVal = document.createElement('span');
+            itemVal.className = `item-val ${isIncome ? 'value-income' : 'value-expense'}`;
+            itemVal.textContent = `${isIncome ? '+' : '-'}$${item.amount.toFixed(2)}`;
+
+            const deleteBtn = document.createElement('button');
+            deleteBtn.className = 'delete-btn';
+            deleteBtn.innerHTML = '&times;';
+            deleteBtn.addEventListener('click', () => eraseTransaction(index));
+
+            amountWrapper.appendChild(itemVal);
+            amountWrapper.appendChild(deleteBtn);
+
+            li.appendChild(itemInfo);
+            li.appendChild(amountWrapper);
+            ledgerList.appendChild(li);
+        });
+    }
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const transaction = {
+            desc: descInput.value.trim(),
+            amount: parseFloat(amountInput.value),
+            type: typeInput.value
+        };
+        dataLog.unshift(transaction);
+        syncWithDatabase();
+        descInput.value = '';
+        amountInput.value = '';
+        descInput.focus();
+    });
+
+    function eraseTransaction(index) {
+        dataLog.splice(index, 1);
+        syncWithDatabase();
+    }
+
+    function syncWithDatabase() {
+        if (currentUser && usersDatabase[currentUser]) {
+            usersDatabase[currentUser].ledger = dataLog;
+            localStorage.setItem('mellontic_users', JSON.stringify(usersDatabase));
+        }
+        updateHUD();
+        renderLedger();
+    }
+
+    // Auto-login verify if session index is currently preserved
+    if (currentUser && usersDatabase[currentUser]) {
+        const activeNode = usersDatabase[currentUser];
+        login(currentUser, activeNode.pfp || defaultPfp, activeNode.ledger || []);
+    } else {
+        sessionStorage.removeItem('mellontic_active_user');
+        currentUser = null;
+    }
+</script>
+</body>
+</html>

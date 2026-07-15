@@ -1,0 +1,88 @@
+/* --- Append to your current style.css --- */
+
+.hidden {
+    display: none !important;
+}
+
+/* Auth Portal Styling */
+.auth-container {
+    width: 100%;
+    max-width: 400px;
+    background: var(--glass-bg);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 30px;
+    box-shadow: 0 0 40px rgba(0, 240, 255, 0.05);
+}
+
+.auth-box h2 {
+    font-family: var(--font-display);
+    font-size: 1.3rem;
+    color: #fff;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.auth-box p {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.auth-box form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.auth-switch {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 0.85rem;
+    color: #8fa3b8;
+}
+
+.auth-switch a {
+    color: var(--neon-cyan);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.auth-switch a:hover {
+    text-shadow: 0 0 8px var(--neon-cyan);
+}
+
+/* User state header components */
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+}
+
+.user-badge {
+    color: var(--neon-green);
+    border: 1px solid rgba(57, 255, 20, 0.2);
+    padding: 4px 10px;
+    border-radius: 4px;
+    background: rgba(57, 255, 20, 0.03);
+}
+
+.utility-btn {
+    background: none;
+    border: 1px solid rgba(255, 0, 127, 0.3);
+    color: var(--neon-pink);
+    padding: 4px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.7rem;
+    transition: all 0.2s ease;
+}
+
+.utility-btn:hover {
+    background: rgba(255, 0, 127, 0.1);
+    box-shadow: 0 0 10px rgba(255, 0, 127, 0.3);
+}
